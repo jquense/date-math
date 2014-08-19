@@ -1,0 +1,24 @@
+{
+  "name": "date-arithmetic",
+  "version": "1.0.0",
+  "description": "simple date math util",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theporchrat/date-math"
+  },
+  "keywords": [
+    "moment",
+    "date",
+    "math"
+  ],
+  "author": "Jason Quense @theporchrat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theporchrat/date-math/issues"
+  },
+  "homepage": "https://github.com/theporchrat/date-math"
+}
