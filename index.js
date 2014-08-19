@@ -1,5 +1,3 @@
-var _ = require('lodash');
-
 var MILI 		= 'milliseconds'
   , SECONDS = 'seconds'
   , MINUTES = 'minutes'

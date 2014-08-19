@@ -24,6 +24,7 @@ get and set date part values.
 - `dateMath.seconds(date, [value])`
 - `dateMath.minutes(date, [value])`
 - `dateMath.hours(date, [value])`
+- `dateMath.date(date, [value])`
 - `dateMath.day(date, [value])`
 - `dateMath.weekday(date, [value])`
 - `dateMath.month(date, [value])`
@@ -37,7 +38,7 @@ return a new date with the relevent date parts zero'd out.
 
     dateMath.startOf(new Date, 'day') // -> no time components
 
-Valid unit values are; `"milliseconds", "second", "minutes", "hours", "day", "weekday", "month", "year", "decade", "century" `
+Valid unit values are; `"second", "minutes", "hours", "day", "week", "month", "year", "decade", "century" `
 
 
 ### `endOf(data, unit)`
@@ -64,6 +65,4 @@ Arithmetic functions
 - `dateMath.min(dateA, dateB, dateN)`
 - `dateMath.max(dateA, dateB, dateN)`
 
-    dateMath.startOf(new Date, 'day') // -> no time components
-
-Valid unit values are; `"milliseconds", "second", "minutes", "hours", "day", "weekday", "month", "year", "decade", "century" `
+Valid unit values are; `"second", "minutes", "hours", "day", "week", "month", "year", "decade", "century" `
