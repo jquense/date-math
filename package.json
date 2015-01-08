@@ -1,6 +1,6 @@
 {
   "name": "date-arithmetic",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "simple date math util",
   "main": "index.js",
   "scripts": {

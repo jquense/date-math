@@ -44,3 +44,8 @@ assert.ok(dateMath.gte(date,  new Date(2013,0,1,0,0,0,0), 'year'), 'gte year')
 assert.ok(dateMath.gt(date,  new Date(2013,0,1,0,0,0,0),  'year'), 'gt year')
 
 
+assert.ok(dateMath.inRange(date,  new Date(2013,0,1,0,0,0,0),  new Date(2014,5,1,0,0,0,0)), 'inRange year')
+assert.ok(!dateMath.inRange(new Date(2013,0,1,0,0,0,0), date,  new Date(2014,5,1,0,0,0,0)), 'inRange year')
+assert.ok(dateMath.inRange(date,  null,  new Date(2014,5,1,0,0,0,0)), 'inRange year')
+assert.ok(dateMath.inRange(date,  new Date(2013,0,1,0,0,0,0), null), 'inRange year')
+

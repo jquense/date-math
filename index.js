@@ -138,8 +138,8 @@ var dates = module.exports = {
   inRange: function(day, min, max, unit){
     unit = unit || 'day'
 
-    return dates.gte(day, min, unit) 
-        && dates.lte(day, max, unit)
+    return (!min || dates.gte(day, min, unit))
+        && (!max || dates.lte(day, max, unit))
   },
 
 	milliseconds: 	createAccessor('Milliseconds'),
