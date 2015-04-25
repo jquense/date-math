@@ -1,6 +1,6 @@
 {
   "name": "date-arithmetic",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "simple date math util",
   "main": "index.js",
   "scripts": {
@@ -8,17 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/theporchrat/date-math"
+    "url": "https://github.com/jquense/date-math"
   },
   "keywords": [
     "moment",
     "date",
     "math"
   ],
-  "author": "Jason Quense @theporchrat",
+  "author": "Jason Quense @monasticpanic",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/theporchrat/date-math/issues"
+    "url": "https://github.com/jquense/date-math/issues"
   },
-  "homepage": "https://github.com/theporchrat/date-math"
+  "homepage": "https://github.com/jquense/date-math"
 }

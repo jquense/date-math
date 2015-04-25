@@ -12,10 +12,6 @@ A simple object containing some date math utils in the spirit of Moment.js. Unli
 
 all api methods return a _new_ date. Date objects are never mutated.
 
-### Localization
-
-`startOfWeek()` method returns a number (usually 0-6) indicating the start of the week day. Override this function to specify a a culture specific start day. the default is `0`.
-
 ### Accessors
 
 get and set date part values. 
@@ -26,13 +22,13 @@ get and set date part values.
 - `dateMath.hours(date, [value])`
 - `dateMath.date(date, [value])`
 - `dateMath.day(date, [value])`
-- `dateMath.weekday(date, [value])`
+- `dateMath.weekday(date, [value], [firstOfWeek = 0])`
 - `dateMath.month(date, [value])`
 - `dateMath.year(date, [value])`
 - `dateMath.decade(date, [value])`
 - `dateMath.century(date, [value])`
 
-### `startOf(data, unit)`
+### `startOf(data, unit, [firstOfWeek = 0])`
 
 return a new date with the relevent date parts zero'd out. 
 
