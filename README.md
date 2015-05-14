@@ -30,7 +30,7 @@ get and set date part values.
 
 ### `startOf(data, unit, [firstOfWeek = 0])`
 
-return a new date with the relevent date parts zero'd out. 
+return a new date with the relevent date parts zero'd out. You only need to provide a `firstOfWeek` when the unit is `'week'`
 
     dateMath.startOf(new Date, 'day') // -> no time components
 
