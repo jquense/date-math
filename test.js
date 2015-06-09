@@ -45,6 +45,7 @@ assert.equal(+dateMath.add(date, 1, 'hours'),   +(new Date(2014, 1, 18, 9, 25, 3
 assert.equal(+dateMath.add(date, 1, 'minutes'), +(new Date(2014, 1, 18, 8, 26, 30, 5)), 'add minutes')
 assert.equal(+dateMath.add(date, 1, 'seconds'), +(new Date(2014, 1, 18, 8, 25, 31, 5)), 'add seconds')
 assert.equal(+dateMath.add(date, 1, 'milliseconds'), +(new Date(2014, 1, 18, 8, 25, 30, 6)), 'add milliseconds')
+assert.equal(+dateMath.subtract(date, 24, 'month'), +dateMath.subtract(date, 2, 'year'), 'month rollover')
 
 assert.equal(+dateMath.max(date, new Date(2013, 0, 1, 0, 0, 0, 0)), +date, 'max')
 assert.equal(+dateMath.min(date, new Date(2015, 0, 1, 0, 0, 0, 0)), +date, 'min')
