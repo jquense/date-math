@@ -141,7 +141,7 @@ function monthMath(date, val){
 
     date = dates.month(date, newMonth)
 
-    if (newMonth < 0 ) newMonth = 12 + val
+    while (newMonth < 0 ) newMonth = 12 + newMonth
       
     //month rollover
     if ( dates.month(date) !== ( newMonth % 12))
