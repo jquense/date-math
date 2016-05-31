@@ -131,9 +131,62 @@ var dates = module.exports = {
       return val === undefined 
         ? weekday 
         : dates.add(date, val - weekday, DAY);
-  }
-}
+  },
 
+  diff: function (date1, date2, unit, asFloat) {
+    var dividend, divisor, result;
+
+    switch (unit) {
+      case MILI:
+      case SECONDS:
+      case MINUTES:
+      case HOURS:
+      case DAY:
+      case WEEK:
+        dividend = date2.getTime() - date1.getTime(); break;
+      case MONTH:
+      case YEAR:
+      case DECADE:
+      case CENTURY:
+        dividend = (dates.year(date2) - dates.year(date1)) * 12 + dates.month(date2) - dates.month(date1); break;
+      default:
+        throw new TypeError('Invalid units: "' + unit + '"');
+    }
+
+    switch (unit) {
+      case MILI:
+          divisor = 1; break;
+      case SECONDS:
+          divisor = 1000; break;
+      case MINUTES:
+          divisor = 1000 * 60; break;
+      case HOURS:
+          divisor = 1000 * 60 * 60; break;
+      case DAY:
+          divisor = 1000 * 60 * 60 * 24; break;
+      case WEEK:
+          divisor = 1000 * 60 * 60 * 24 * 7; break;
+      case MONTH:
+          divisor = 1; break;
+      case YEAR:
+          divisor = 12; break;
+      case DECADE:
+          divisor = 120; break;
+      case CENTURY:
+          divisor = 1200; break;
+      default:
+        throw new TypeError('Invalid units: "' + unit + '"');
+    }
+
+    result = dividend / divisor;
+
+    return asFloat ? result : absoluteFloor(result);
+  }
+};
+
+function absoluteFloor(number) {
+  return number < 0 ? Math.ceil(number) : Math.floor(number);
+}
 
 function monthMath(date, val){
   var current = dates.month(date)

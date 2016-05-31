@@ -60,5 +60,6 @@ Arithmetic functions
 - `dateMath.inRange(day, min, max, unit)`
 - `dateMath.min(dateA, dateB, dateN)`
 - `dateMath.max(dateA, dateB, dateN)`
+- `dateMath.diff(dateA, dateB, unit, asFloat)`
 
 Valid unit values are; `"second", "minutes", "hours", "day", "week", "month", "year", "decade", "century" `

@@ -65,4 +65,33 @@ assert.ok(!dateMath.inRange(new Date(2013,0,1,0,0,0,0), date,  new Date(2014,5,1
 assert.ok(dateMath.inRange(date,  null,  new Date(2014,5,1,0,0,0,0)), 'inRange year')
 assert.ok(dateMath.inRange(date,  new Date(2013,0,1,0,0,0,0), null),  'inRange year')
 
+assert.equal(dateMath.diff(date, date, 'milliseconds'), 0)
+assert.equal(dateMath.diff(dateMath.subtract(date, 100, 'milliseconds'), date, 'milliseconds'), 100)
+assert.equal(dateMath.diff(date, dateMath.subtract(date, 100, 'milliseconds'), 'milliseconds'), -100)
+assert.equal(dateMath.diff(dateMath.subtract(date, 100, 'milliseconds'), date, 'seconds'), 0)
+assert.equal(dateMath.diff(date, dateMath.subtract(date, 100, 'milliseconds'), 'seconds'), 0)
+assert.equal(dateMath.diff(dateMath.subtract(date, 100, 'milliseconds'), date, 'seconds', true), 0.1)
+assert.equal(dateMath.diff(date, dateMath.subtract(date, 100, 'milliseconds'), 'seconds', true), -0.1)
+assert.equal(dateMath.diff(dateMath.subtract(date, 1000, 'milliseconds'), date, 'seconds'), 1)
+assert.equal(dateMath.diff(dateMath.subtract(date, 12, 'minutes'), date, 'minutes'), 12)
+assert.equal(dateMath.diff(dateMath.subtract(date, 2, 'hours'), date, 'minutes'), 120)
+assert.equal(dateMath.diff(dateMath.subtract(date, 2, 'hours'), date, 'hours'), 2)
+assert.equal(dateMath.diff(dateMath.subtract(date, 1, 'day'), date, 'day'), 1)
+assert.equal(dateMath.diff(dateMath.subtract(date, 125, 'month'), date, 'month'), 125)
+assert.equal(dateMath.diff(dateMath.subtract(date, 125, 'month'), date, 'year'), 10)
+assert.equal(dateMath.diff(date, dateMath.subtract(date, 125, 'month'), 'year'), -10)
+assert.equal(dateMath.diff(dateMath.subtract(date, 126, 'month'), date, 'year', true), 10.5)
+assert.equal(dateMath.diff(date, dateMath.subtract(date, 126, 'month'), 'year', true), -10.5)
+assert.equal(dateMath.diff(dateMath.subtract(date, 125, 'month'), date, 'decade'), 1)
+assert.equal(dateMath.diff(dateMath.subtract(date, 250, 'month'), date, 'decade'), 2)
+assert.equal(dateMath.diff(dateMath.subtract(date, 10, 'year'), date, 'century'), 0)
+assert.equal(dateMath.diff(dateMath.subtract(date, 100, 'year'), date, 'century'), 1)
+assert.equal(dateMath.diff(dateMath.subtract(date, 101, 'year'), date, 'century'), 1)
+assert.equal(dateMath.diff(date, dateMath.subtract(date, 101, 'year'), 'century'), -1)
+assert.equal(dateMath.diff(dateMath.subtract(date, 101, 'year'), date, 'century', true), 1.01)
+assert.equal(dateMath.diff(dateMath.subtract(date, 201, 'year'), date, 'century'), 2)
+assert.throws(function () {
+    dateMath.diff(dateMath.subtract(date, 201, 'year'), date, 'unknown');
+}, /Invalid units: "unknown"/);
+
 console.log(' past')
