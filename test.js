@@ -1,14 +1,14 @@
 var assert = require('assert')
   , dateMath = require('./index')
 
-var date = new Date( 
-      2014 /* year */ 
-    , 1    /* month */ 
-    , 18   /* day */ 
-    , 8    /* hour */ 
-    , 25   /* min */ 
-    , 30   /* sec */ 
-    , 5);  /* ms */ 
+var date = new Date(
+      2014 /* year */
+    , 1    /* month */
+    , 18   /* day */
+    , 8    /* hour */
+    , 25   /* min */
+    , 30   /* sec */
+    , 5);  /* ms */
 
 console.log('---- Accessors ----------------------------')
 //accessors
@@ -21,7 +21,7 @@ assert.equal(dateMath.minutes(date), 25,   'minute is equal to 25')
 assert.equal(dateMath.seconds(date), 30,   'seconds is equal to 30')
 assert.equal(dateMath.milliseconds(date), 5,    'ms is equal to 5')
 
-console.log(' past')
+console.log(' passed')
 console.log('---- start of ----------------------------')
 
 assert.equal(+dateMath.startOf(date, 'year'), +(new Date(2014,0,1,0,0,0,0)), 'startOf year')
@@ -32,7 +32,7 @@ assert.equal(+dateMath.startOf(date, 'hours'), +(new Date(2014,1,18,8,0,0,0)), '
 assert.equal(+dateMath.startOf(date, 'minutes'), +(new Date(2014,1,18,8,25,0,0)), 'startOf minutes')
 assert.equal(+dateMath.startOf(date, 'seconds'), +(new Date(2014,1,18,8,25,30,0)), 'startOf seconds')
 
-console.log(' past')
+console.log(' passed')
 console.log('---- Date Math ----------------------------')
 
 assert.equal(+dateMath.add(date, 1, 'century'), +(new Date(2114, 1, 18, 8, 25, 30, 5)), 'add century')
@@ -94,4 +94,4 @@ assert.throws(function () {
     dateMath.diff(dateMath.subtract(date, 201, 'year'), date, 'unknown');
 }, /Invalid units: "unknown"/);
 
-console.log(' past')
+console.log(' passed')
