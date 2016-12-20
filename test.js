@@ -10,6 +10,24 @@ var date = new Date(
     , 30   /* sec */
     , 5);  /* ms */
 
+var beforeDaylightSavingTime = new Date(
+      2017 /* year */
+    , 2    /* month */
+    , 25   /* day */
+    , 12    /* hour */
+    , 0   /* min */
+    , 0   /* sec */
+    , 0);  /* ms */
+
+var afterDaylightSavingTime = new Date(
+      2017 /* year */
+    , 2    /* month */
+    , 26   /* day */
+    , 12    /* hour */
+    , 0   /* min */
+    , 0   /* sec */
+    , 0);  /* ms */
+
 console.log('---- Accessors ----------------------------')
 //accessors
 assert.equal(dateMath.year(date), 2014, 'year is equal to 2014')
@@ -77,6 +95,7 @@ assert.equal(dateMath.diff(dateMath.subtract(date, 12, 'minutes'), date, 'minute
 assert.equal(dateMath.diff(dateMath.subtract(date, 2, 'hours'), date, 'minutes'), 120)
 assert.equal(dateMath.diff(dateMath.subtract(date, 2, 'hours'), date, 'hours'), 2)
 assert.equal(dateMath.diff(dateMath.subtract(date, 1, 'day'), date, 'day'), 1)
+assert.equal(dateMath.diff(beforeDaylightSavingTime, afterDaylightSavingTime, 'day'), 1)
 assert.equal(dateMath.diff(dateMath.subtract(date, 125, 'month'), date, 'month'), 125)
 assert.equal(dateMath.diff(dateMath.subtract(date, 125, 'month'), date, 'year'), 10)
 assert.equal(dateMath.diff(date, dateMath.subtract(date, 125, 'month'), 'year'), -10)
