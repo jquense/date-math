@@ -24,7 +24,7 @@ var dates = module.exports = {
       case DAY:
         return dates.date(date, dates.date(date) + num)
       case WEEK:
-        return dates.date(date, dates.date(date) + (7 * num)) 
+        return dates.date(date, dates.date(date) + (7 * num))
       case MONTH:
         return monthMath(date, num)
       case DECADE:
@@ -61,13 +61,13 @@ var dates = module.exports = {
           date = dates.milliseconds(date, 0);
     }
 
-    if (unit === DECADE) 
+    if (unit === DECADE)
       date = dates.subtract(date, dates.year(date) % 10, 'year')
-    
-    if (unit === CENTURY) 
+
+    if (unit === CENTURY)
       date = dates.subtract(date, dates.year(date) % 100, 'year')
 
-    if (unit === WEEK) 
+    if (unit === WEEK)
       date = dates.weekday(date, 0, firstOfWeek);
 
     return date
@@ -96,7 +96,7 @@ var dates = module.exports = {
   max: function(){
     return new Date(Math.max.apply(Math, arguments))
   },
-  
+
   inRange: function(day, min, max, unit){
     unit = unit || 'day'
 
@@ -114,13 +114,13 @@ var dates = module.exports = {
   year:           createAccessor('FullYear'),
 
   decade: function (date, val) {
-    return val === undefined 
+    return val === undefined
       ? dates.year(dates.startOf(date, DECADE))
       : dates.add(date, val + 10, YEAR);
   },
 
   century: function (date, val) {
-    return val === undefined 
+    return val === undefined
       ? dates.year(dates.startOf(date, CENTURY))
       : dates.add(date, val + 100, YEAR);
   },
@@ -128,8 +128,8 @@ var dates = module.exports = {
   weekday: function (date, val, firstDay) {
       var weekday = (dates.day(date) + 7 - (firstDay || 0) ) % 7;
 
-      return val === undefined 
-        ? weekday 
+      return val === undefined
+        ? weekday
         : dates.add(date, val - weekday, DAY);
   },
 
@@ -180,13 +180,9 @@ var dates = module.exports = {
 
     result = dividend / divisor;
 
-    return asFloat ? result : absoluteFloor(result);
+    return asFloat ? result : Math.round(result);
   }
 };
-
-function absoluteFloor(number) {
-  return number < 0 ? Math.ceil(number) : Math.floor(number);
-}
 
 function monthMath(date, val){
   var current = dates.month(date)
@@ -195,7 +191,7 @@ function monthMath(date, val){
     date = dates.month(date, newMonth)
 
     while (newMonth < 0 ) newMonth = 12 + newMonth
-      
+
     //month rollover
     if ( dates.month(date) !== ( newMonth % 12))
       date = dates.date(date, 0) //move to last of month
