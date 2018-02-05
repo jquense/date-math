@@ -200,13 +200,34 @@ function monthMath(date, val){
 }
 
 function createAccessor(method){
+  var hourLength = (function(method) {  
+    switch(method) {
+      case 'Milliseconds':
+        return 3600000;
+      case 'Seconds':
+        return 3600;
+      case 'Minutes':
+        return 60;
+      case 'Hours':
+        return 1;
+      default:
+        return -1;
+    }
+  })(method);
+  
   return function(date, val){
     if (val === undefined)
       return date['get' + method]()
 
-    date = new Date(date)
-    date['set' + method](val)
-    return date
+    dateOut = new Date(date)
+    dateOut['set' + method](val)
+    
+    if(dateOut['get'+method]() != val && (method === 'Hours' || val >=hourLength && (dateOut.getHours()-date.getHours()<Math.floor(val/hourLength))) ){
+      //Skip DST hour, if it occurs
+      dateOut['set'+method](val+hourLength);
+    }
+    
+    return dateOut
   }
 }
 
