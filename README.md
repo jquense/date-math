@@ -6,7 +6,7 @@ A simple object containing some date math utils in the spirit of Moment.js. Unli
 
     var dateMath = require('date-arithmetic')
 
-    var date = dateMath.month(new Date) 
+    var date = dateMath.month(new Date)
 
 ## API
 
@@ -14,7 +14,7 @@ all api methods return a _new_ date. Date objects are never mutated.
 
 ### Accessors
 
-get and set date part values. 
+get and set date part values.
 
 - `dateMath.milliseconds(date, [value])`
 - `dateMath.seconds(date, [value])`
@@ -34,7 +34,7 @@ return a new date with the relevent date parts zero'd out. You only need to prov
 
     dateMath.startOf(new Date, 'day') // -> no time components
 
-Valid unit values are; `"second", "minutes", "hours", "day", "week", "month", "year", "decade", "century" `
+Valid unit values are; `"seconds", "minutes", "hours", "day", "week", "month", "year", "decade", "century" `
 
 
 ### `endOf(data, unit)`
@@ -43,7 +43,7 @@ the opposite of `startOf`
 
     dateMath.endOf(new Date, 'day') // -> one millisecond before tomorrow
 
-Valid unit values are; `"milliseconds", "second", "minutes", "hours", "day", "weekday", "month", "year", "decade", "century"`.
+Valid unit values are; `"milliseconds", "seconds", "minutes", "hours", "day", "weekday", "month", "year", "decade", "century"`.
 
 ### Math Functions
 
@@ -51,15 +51,15 @@ Arithmetic functions
 
 - `dateMath.add(date, value, unit)`
 - `dateMath.subtract(date, value, unit)`
-- `dateMath.eq(dateA, dateB)`
-- `dateMath.neq(dateA, dateB)`
-- `dateMath.gte(dateA, dateB)`
-- `dateMath.gt(dateA, dateB)`
-- `dateMath.lte(dateA, dateB)`
-- `dateMath.lt(dateA, dateB)`
+- `dateMath.eq(dateA, dateB, [unit])`
+- `dateMath.neq(dateA, dateB, [unit])`
+- `dateMath.gte(dateA, dateB, [unit])`
+- `dateMath.gt(dateA, dateB, [unit])`
+- `dateMath.lte(dateA, dateB, [unit])`
+- `dateMath.lt(dateA, dateB, [unit])`
 - `dateMath.inRange(day, min, max, unit)`
 - `dateMath.min(dateA, dateB, dateN)`
 - `dateMath.max(dateA, dateB, dateN)`
 - `dateMath.diff(dateA, dateB, unit, asFloat)`
 
-Valid unit values are; `"second", "minutes", "hours", "day", "week", "month", "year", "decade", "century" `
+Valid unit values are; `"seconds", "minutes", "hours", "day", "week", "month", "year", "decade", "century" `
