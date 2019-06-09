@@ -46,20 +46,20 @@ export function startOf(d, unit, firstOfWeek) {
   d = new Date(d)
 
   switch (unit) {
-    case 'century':
-    case 'decade':
-    case 'year':
+    case CENTURY:
+    case DECADE:
+    case YEAR:
         d = month(d, 0);
-    case 'month':
+    case MONTH:
         d = date(d, 1);
-    case 'week':
-    case 'day':
+    case WEEK:
+    case DAY:
         d = hours(d, 0);
-    case 'hours':
+    case HOURS:
         d = minutes(d, 0);
-    case 'minutes':
+    case MINUTES:
         d = seconds(d, 0);
-    case 'seconds':
+    case SECONDS:
         d = milliseconds(d, 0);
   }
 
