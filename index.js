@@ -9,194 +9,194 @@ var MILI    = 'milliseconds'
   , DECADE  = 'decade'
   , CENTURY = 'century';
 
-var dates = module.exports = {
+export function add(d, num, unit) {
+  d = new Date(d)
 
-  add: function(date, num, unit) {
-    date = new Date(date)
-
-    switch (unit){
-      case MILI:
-      case SECONDS:
-      case MINUTES:
-      case HOURS:
-      case YEAR:
-        return dates[unit](date, dates[unit](date) + num)
-      case DAY:
-        return dates.date(date, dates.date(date) + num)
-      case WEEK:
-        return dates.date(date, dates.date(date) + (7 * num))
-      case MONTH:
-        return monthMath(date, num)
-      case DECADE:
-        return dates.year(date, dates.year(date) + (num * 10))
-      case CENTURY:
-        return dates.year(date, dates.year(date) + (num * 100))
-    }
-
-    throw new TypeError('Invalid units: "' + unit + '"')
-  },
-
-  subtract: function(date, num, unit) {
-    return dates.add(date, -num, unit)
-  },
-
-  startOf: function(date, unit, firstOfWeek) {
-    date = new Date(date)
-
-    switch (unit) {
-      case 'century':
-      case 'decade':
-      case 'year':
-          date = dates.month(date, 0);
-      case 'month':
-          date = dates.date(date, 1);
-      case 'week':
-      case 'day':
-          date = dates.hours(date, 0);
-      case 'hours':
-          date = dates.minutes(date, 0);
-      case 'minutes':
-          date = dates.seconds(date, 0);
-      case 'seconds':
-          date = dates.milliseconds(date, 0);
-    }
-
-    if (unit === DECADE)
-      date = dates.subtract(date, dates.year(date) % 10, 'year')
-
-    if (unit === CENTURY)
-      date = dates.subtract(date, dates.year(date) % 100, 'year')
-
-    if (unit === WEEK)
-      date = dates.weekday(date, 0, firstOfWeek);
-
-    return date
-  },
-
-
-  endOf: function(date, unit, firstOfWeek){
-    date = new Date(date)
-    date = dates.startOf(date, unit, firstOfWeek)
-    date = dates.add(date, 1, unit)
-    date = dates.subtract(date, 1, MILI)
-    return date
-  },
-
-  eq:  createComparer(function(a, b){ return a === b }),
-  neq: createComparer(function(a, b){ return a !== b }),
-  gt:  createComparer(function(a, b){ return a > b }),
-  gte: createComparer(function(a, b){ return a >= b }),
-  lt:  createComparer(function(a, b){ return a < b }),
-  lte: createComparer(function(a, b){ return a <= b }),
-
-  min: function(){
-    return new Date(Math.min.apply(Math, arguments))
-  },
-
-  max: function(){
-    return new Date(Math.max.apply(Math, arguments))
-  },
-
-  inRange: function(day, min, max, unit){
-    unit = unit || 'day'
-
-    return (!min || dates.gte(day, min, unit))
-        && (!max || dates.lte(day, max, unit))
-  },
-
-  milliseconds:   createAccessor('Milliseconds'),
-  seconds:        createAccessor('Seconds'),
-  minutes:        createAccessor('Minutes'),
-  hours:          createAccessor('Hours'),
-  day:            createAccessor('Day'),
-  date:           createAccessor('Date'),
-  month:          createAccessor('Month'),
-  year:           createAccessor('FullYear'),
-
-  decade: function (date, val) {
-    return val === undefined
-      ? dates.year(dates.startOf(date, DECADE))
-      : dates.add(date, val + 10, YEAR);
-  },
-
-  century: function (date, val) {
-    return val === undefined
-      ? dates.year(dates.startOf(date, CENTURY))
-      : dates.add(date, val + 100, YEAR);
-  },
-
-  weekday: function (date, val, firstDay) {
-      var weekday = (dates.day(date) + 7 - (firstDay || 0) ) % 7;
-
-      return val === undefined
-        ? weekday
-        : dates.add(date, val - weekday, DAY);
-  },
-
-  diff: function (date1, date2, unit, asFloat) {
-    var dividend, divisor, result;
-
-    switch (unit) {
-      case MILI:
-      case SECONDS:
-      case MINUTES:
-      case HOURS:
-      case DAY:
-      case WEEK:
-        dividend = date2.getTime() - date1.getTime(); break;
-      case MONTH:
-      case YEAR:
-      case DECADE:
-      case CENTURY:
-        dividend = (dates.year(date2) - dates.year(date1)) * 12 + dates.month(date2) - dates.month(date1); break;
-      default:
-        throw new TypeError('Invalid units: "' + unit + '"');
-    }
-
-    switch (unit) {
-      case MILI:
-          divisor = 1; break;
-      case SECONDS:
-          divisor = 1000; break;
-      case MINUTES:
-          divisor = 1000 * 60; break;
-      case HOURS:
-          divisor = 1000 * 60 * 60; break;
-      case DAY:
-          divisor = 1000 * 60 * 60 * 24; break;
-      case WEEK:
-          divisor = 1000 * 60 * 60 * 24 * 7; break;
-      case MONTH:
-          divisor = 1; break;
-      case YEAR:
-          divisor = 12; break;
-      case DECADE:
-          divisor = 120; break;
-      case CENTURY:
-          divisor = 1200; break;
-      default:
-        throw new TypeError('Invalid units: "' + unit + '"');
-    }
-
-    result = dividend / divisor;
-
-    return asFloat ? result : Math.round(result);
+  switch (unit){
+    case MILI:
+      return milliseconds(d, milliseconds(d) + num)
+    case SECONDS:
+      return seconds(d, seconds(d) + num)
+    case MINUTES:
+      return minutes(d, minutes(d) + num)
+    case HOURS:
+      return hours(d, hours(d) + num)
+    case YEAR:
+      return year(d, year(d) + num)
+    case DAY:
+      return date(d, date(d) + num)
+    case WEEK:
+      return date(d, date(d) + (7 * num))
+    case MONTH:
+      return monthMath(d, num)
+    case DECADE:
+      return year(d, year(d) + (num * 10))
+    case CENTURY:
+      return year(d, year(d) + (num * 100))
   }
-};
 
-function monthMath(date, val){
-  var current = dates.month(date)
+  throw new TypeError('Invalid units: "' + unit + '"')
+}
+
+export function subtract(d, num, unit) {
+  return add(d, -num, unit)
+}
+
+export function startOf(d, unit, firstOfWeek) {
+  d = new Date(d)
+
+  switch (unit) {
+    case 'century':
+    case 'decade':
+    case 'year':
+        d = month(d, 0);
+    case 'month':
+        d = date(d, 1);
+    case 'week':
+    case 'day':
+        d = hours(d, 0);
+    case 'hours':
+        d = minutes(d, 0);
+    case 'minutes':
+        d = seconds(d, 0);
+    case 'seconds':
+        d = milliseconds(d, 0);
+  }
+
+  if (unit === DECADE)
+    d = subtract(d, year(d) % 10, 'year')
+
+  if (unit === CENTURY)
+    d = subtract(d, year(d) % 100, 'year')
+
+  if (unit === WEEK)
+    d = weekday(d, 0, firstOfWeek);
+
+  return d
+}
+
+export function endOf(d, unit, firstOfWeek){
+  d = new Date(d)
+  d = startOf(d, unit, firstOfWeek)
+  d = add(d, 1, unit)
+  d = subtract(d, 1, MILI)
+  return d
+}
+
+export var eq =  createComparer(function(a, b){ return a === b })
+export var neq = createComparer(function(a, b){ return a !== b })
+export var gt =  createComparer(function(a, b){ return a > b })
+export var gte = createComparer(function(a, b){ return a >= b })
+export var lt =  createComparer(function(a, b){ return a < b })
+export var lte = createComparer(function(a, b){ return a <= b })
+
+export function min(){
+  return new Date(Math.min.apply(Math, arguments))
+}
+
+export function max(){
+  return new Date(Math.max.apply(Math, arguments))
+}
+
+export function inRange(day, min, max, unit){
+  unit = unit || 'day'
+
+  return (!min || gte(day, min, unit))
+      && (!max || lte(day, max, unit))
+}
+
+export var milliseconds = createAccessor('Milliseconds')
+export var seconds =      createAccessor('Seconds')
+export var minutes =      createAccessor('Minutes')
+export var hours =        createAccessor('Hours')
+export var day =          createAccessor('Day')
+export var date =         createAccessor('Date')
+export var month =        createAccessor('Month')
+export var year =         createAccessor('FullYear')
+
+export function decade(d, val) {
+  return val === undefined
+    ? year(startOf(d, DECADE))
+    : add(d, val + 10, YEAR);
+}
+
+export function century(d, val) {
+  return val === undefined
+    ? year(startOf(d, CENTURY))
+    : add(d, val + 100, YEAR);
+}
+
+export function weekday(d, val, firstDay) {
+    var w = (day(d) + 7 - (firstDay || 0) ) % 7;
+
+    return val === undefined
+      ? w
+      : add(d, val - w, DAY);
+}
+
+export function diff(date1, date2, unit, asFloat) {
+  var dividend, divisor, result;
+
+  switch (unit) {
+    case MILI:
+    case SECONDS:
+    case MINUTES:
+    case HOURS:
+    case DAY:
+    case WEEK:
+      dividend = date2.getTime() - date1.getTime(); break;
+    case MONTH:
+    case YEAR:
+    case DECADE:
+    case CENTURY:
+      dividend = (year(date2) - year(date1)) * 12 + month(date2) - month(date1); break;
+    default:
+      throw new TypeError('Invalid units: "' + unit + '"');
+  }
+
+  switch (unit) {
+    case MILI:
+        divisor = 1; break;
+    case SECONDS:
+        divisor = 1000; break;
+    case MINUTES:
+        divisor = 1000 * 60; break;
+    case HOURS:
+        divisor = 1000 * 60 * 60; break;
+    case DAY:
+        divisor = 1000 * 60 * 60 * 24; break;
+    case WEEK:
+        divisor = 1000 * 60 * 60 * 24 * 7; break;
+    case MONTH:
+        divisor = 1; break;
+    case YEAR:
+        divisor = 12; break;
+    case DECADE:
+        divisor = 120; break;
+    case CENTURY:
+        divisor = 1200; break;
+    default:
+      throw new TypeError('Invalid units: "' + unit + '"');
+  }
+
+  result = dividend / divisor;
+
+  return asFloat ? result : Math.round(result);
+}
+
+function monthMath(d, val){
+  var current = month(d)
     , newMonth  = (current + val);
 
-    date = dates.month(date, newMonth)
+    d = month(d, newMonth)
 
     while (newMonth < 0 ) newMonth = 12 + newMonth
 
     //month rollover
-    if ( dates.month(date) !== ( newMonth % 12))
-      date = dates.date(date, 0) //move to last of month
+    if ( month(d) !== ( newMonth % 12))
+      d = date(d, 0) //move to last of month
 
-    return date
+    return d
 }
 
 function createAccessor(method){
@@ -215,14 +215,14 @@ function createAccessor(method){
     }
   })(method);
   
-  return function(date, val){
+  return function(d, val){
     if (val === undefined)
-      return date['get' + method]()
+      return d['get' + method]()
 
-    dateOut = new Date(date)
+    var dateOut = new Date(d)
     dateOut['set' + method](val)
     
-    if(dateOut['get'+method]() != val && (method === 'Hours' || val >=hourLength && (dateOut.getHours()-date.getHours()<Math.floor(val/hourLength))) ){
+    if(dateOut['get'+method]() != val && (method === 'Hours' || val >=hourLength && (dateOut.getHours()-d.getHours()<Math.floor(val/hourLength))) ){
       //Skip DST hour, if it occurs
       dateOut['set'+method](val+hourLength);
     }
@@ -233,6 +233,6 @@ function createAccessor(method){
 
 function createComparer(operator) {
   return function (a, b, unit) {
-    return operator(+dates.startOf(a, unit), +dates.startOf(b, unit))
+    return operator(+startOf(a, unit), +startOf(b, unit))
   };
 }

@@ -4,7 +4,7 @@ Date Arthmetic
 
 A simple object containing some date math utils in the spirit of Moment.js. Unlike Moment this module, returns real date objects, so it isn't chainable.
 
-    var dateMath = require('date-arithmetic')
+    import * as dateMath from 'date-arithmetic'
 
     var date = dateMath.month(new Date)
 

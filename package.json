@@ -2,9 +2,11 @@
   "name": "date-arithmetic",
   "version": "3.1.0",
   "description": "simple date math util",
-  "main": "index.js",
+  "main": "index.cjs.js",
+  "module": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node -r esm test.js",
+    "prepublishOnly": "rollup --input index.js --file index.cjs.js --format cjs"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/jquense/date-math/issues"
   },
-  "homepage": "https://github.com/jquense/date-math"
+  "homepage": "https://github.com/jquense/date-math",
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "rollup": "^1.14.4"
+  }
 }
