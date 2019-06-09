@@ -11,8 +11,8 @@ var MILI    = 'milliseconds'
 
 var dates = module.exports = {
 
-  add: function(date, num, unit) {
-    date = new Date(date)
+  add: function(d, num, unit) {
+    d = new Date(d)
 
     switch (unit){
       case MILI:
@@ -20,66 +20,66 @@ var dates = module.exports = {
       case MINUTES:
       case HOURS:
       case YEAR:
-        return dates[unit](date, dates[unit](date) + num)
+        return dates[unit](d, dates[unit](d) + num)
       case DAY:
-        return dates.date(date, dates.date(date) + num)
+        return dates.date(d, dates.date(d) + num)
       case WEEK:
-        return dates.date(date, dates.date(date) + (7 * num))
+        return dates.date(d, dates.date(d) + (7 * num))
       case MONTH:
-        return monthMath(date, num)
+        return monthMath(d, num)
       case DECADE:
-        return dates.year(date, dates.year(date) + (num * 10))
+        return dates.year(d, dates.year(d) + (num * 10))
       case CENTURY:
-        return dates.year(date, dates.year(date) + (num * 100))
+        return dates.year(d, dates.year(d) + (num * 100))
     }
 
     throw new TypeError('Invalid units: "' + unit + '"')
   },
 
-  subtract: function(date, num, unit) {
-    return dates.add(date, -num, unit)
+  subtract: function(d, num, unit) {
+    return dates.add(d, -num, unit)
   },
 
-  startOf: function(date, unit, firstOfWeek) {
-    date = new Date(date)
+  startOf: function(d, unit, firstOfWeek) {
+    d = new Date(d)
 
     switch (unit) {
       case 'century':
       case 'decade':
       case 'year':
-          date = dates.month(date, 0);
+          d = dates.month(d, 0);
       case 'month':
-          date = dates.date(date, 1);
+          d = dates.date(d, 1);
       case 'week':
       case 'day':
-          date = dates.hours(date, 0);
+          d = dates.hours(d, 0);
       case 'hours':
-          date = dates.minutes(date, 0);
+          d = dates.minutes(d, 0);
       case 'minutes':
-          date = dates.seconds(date, 0);
+          d = dates.seconds(d, 0);
       case 'seconds':
-          date = dates.milliseconds(date, 0);
+          d = dates.milliseconds(d, 0);
     }
 
     if (unit === DECADE)
-      date = dates.subtract(date, dates.year(date) % 10, 'year')
+      d = dates.subtract(d, dates.year(d) % 10, 'year')
 
     if (unit === CENTURY)
-      date = dates.subtract(date, dates.year(date) % 100, 'year')
+      d = dates.subtract(d, dates.year(d) % 100, 'year')
 
     if (unit === WEEK)
-      date = dates.weekday(date, 0, firstOfWeek);
+      d = dates.weekday(d, 0, firstOfWeek);
 
-    return date
+    return d
   },
 
 
-  endOf: function(date, unit, firstOfWeek){
-    date = new Date(date)
-    date = dates.startOf(date, unit, firstOfWeek)
-    date = dates.add(date, 1, unit)
-    date = dates.subtract(date, 1, MILI)
-    return date
+  endOf: function(d, unit, firstOfWeek){
+    d = new Date(d)
+    d = dates.startOf(d, unit, firstOfWeek)
+    d = dates.add(d, 1, unit)
+    d = dates.subtract(d, 1, MILI)
+    return d
   },
 
   eq:  createComparer(function(a, b){ return a === b }),
@@ -113,24 +113,24 @@ var dates = module.exports = {
   month:          createAccessor('Month'),
   year:           createAccessor('FullYear'),
 
-  decade: function (date, val) {
+  decade: function (d, val) {
     return val === undefined
-      ? dates.year(dates.startOf(date, DECADE))
-      : dates.add(date, val + 10, YEAR);
+      ? dates.year(dates.startOf(d, DECADE))
+      : dates.add(d, val + 10, YEAR);
   },
 
-  century: function (date, val) {
+  century: function (d, val) {
     return val === undefined
-      ? dates.year(dates.startOf(date, CENTURY))
-      : dates.add(date, val + 100, YEAR);
+      ? dates.year(dates.startOf(d, CENTURY))
+      : dates.add(d, val + 100, YEAR);
   },
 
-  weekday: function (date, val, firstDay) {
-      var weekday = (dates.day(date) + 7 - (firstDay || 0) ) % 7;
+  weekday: function (d, val, firstDay) {
+      var weekday = (dates.day(d) + 7 - (firstDay || 0) ) % 7;
 
       return val === undefined
         ? weekday
-        : dates.add(date, val - weekday, DAY);
+        : dates.add(d, val - weekday, DAY);
   },
 
   diff: function (date1, date2, unit, asFloat) {
@@ -184,19 +184,19 @@ var dates = module.exports = {
   }
 };
 
-function monthMath(date, val){
-  var current = dates.month(date)
+function monthMath(d, val){
+  var current = dates.month(d)
     , newMonth  = (current + val);
 
-    date = dates.month(date, newMonth)
+    d = dates.month(d, newMonth)
 
     while (newMonth < 0 ) newMonth = 12 + newMonth
 
     //month rollover
-    if ( dates.month(date) !== ( newMonth % 12))
-      date = dates.date(date, 0) //move to last of month
+    if ( dates.month(d) !== ( newMonth % 12))
+      d = dates.date(d, 0) //move to last of month
 
-    return date
+    return d
 }
 
 function createAccessor(method){
@@ -215,14 +215,14 @@ function createAccessor(method){
     }
   })(method);
   
-  return function(date, val){
+  return function(d, val){
     if (val === undefined)
-      return date['get' + method]()
+      return d['get' + method]()
 
-    dateOut = new Date(date)
+    dateOut = new Date(d)
     dateOut['set' + method](val)
     
-    if(dateOut['get'+method]() != val && (method === 'Hours' || val >=hourLength && (dateOut.getHours()-date.getHours()<Math.floor(val/hourLength))) ){
+    if(dateOut['get'+method]() != val && (method === 'Hours' || val >=hourLength && (dateOut.getHours()-d.getHours()<Math.floor(val/hourLength))) ){
       //Skip DST hour, if it occurs
       dateOut['set'+method](val+hourLength);
     }
