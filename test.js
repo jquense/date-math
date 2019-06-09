@@ -1,5 +1,5 @@
-var assert = require('assert')
-  , dateMath = require('./index')
+import assert from 'assert'
+import * as dateMath from './index'
 
 var date = new Date(
       2014 /* year */
