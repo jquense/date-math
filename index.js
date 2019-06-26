@@ -211,7 +211,7 @@ function createAccessor(method){
       case 'Hours':
         return 1;
       default:
-        return -1;
+        return null;
     }
   })(method);
   
@@ -222,7 +222,7 @@ function createAccessor(method){
     var dateOut = new Date(d)
     dateOut['set' + method](val)
     
-    if(dateOut['get'+method]() != val && (method === 'Hours' || val >=hourLength && (dateOut.getHours()-d.getHours()<Math.floor(val/hourLength))) ){
+    if(hourLength && dateOut['get'+method]() != val && (method === 'Hours' || val >=hourLength && (dateOut.getHours()-d.getHours()<Math.floor(val/hourLength))) ){
       //Skip DST hour, if it occurs
       dateOut['set'+method](val+hourLength);
     }
