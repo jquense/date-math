@@ -9,33 +9,71 @@ var MILI    = 'milliseconds'
   , DECADE  = 'decade'
   , CENTURY = 'century';
 
+var multiplierMilli = {
+  'milliseconds': 1,
+  'seconds': 1000,
+  'minutes': 60 * 1000,
+  'hours': 60 * 60 * 1000,
+  'day': 24 * 60 * 60 * 1000,
+  'week': 7 * 24 * 60 * 60 * 1000 
+}
+
+var multiplierMonth = {
+  'month': 1,
+  'year': 12,
+  'decade': 10 * 12,
+  'century': 100 * 12
+}
+
+function daysOf(year) {
+  return [31, daysInFeb(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+}
+
+function daysInFeb(year) {
+  return (
+      year % 4 === 0 
+      && year % 100 !== 0
+    ) || year % 400 === 0
+      ? 29
+      : 28
+}
+
 export function add(d, num, unit) {
   d = new Date(d)
-
+  var t = +(d)
   switch (unit){
     case MILI:
-      return milliseconds(d, milliseconds(d) + num)
     case SECONDS:
-      return seconds(d, seconds(d) + num)
     case MINUTES:
-      return minutes(d, minutes(d) + num)
     case HOURS:
-      return hours(d, hours(d) + num)
-    case YEAR:
-      return year(d, year(d) + num)
     case DAY:
-      return date(d, date(d) + num)
     case WEEK:
-      return date(d, date(d) + (7 * num))
+      return new Date(t + num * multiplierMilli[unit])
     case MONTH:
-      return monthMath(d, num)
+    case YEAR:
     case DECADE:
-      return year(d, year(d) + (num * 10))
     case CENTURY:
-      return year(d, year(d) + (num * 100))
+      return addMonth(d, num * multiplierMonth[unit])
   }
 
   throw new TypeError('Invalid units: "' + unit + '"')
+}
+
+function addMonth(d, num) {
+  var year = d.getFullYear()
+    , month = d.getMonth()
+    , day = d.getDate()
+    , totalMonths = year * 12 + month + num
+    , nextYear = totalMonths / 12
+    , nextMonth = totalMonths % 12
+    , nextDay = Math.min(day, daysOf(year)[nextMonth])
+
+  var nextDate = new Date(d)
+  nextDate.setFullYear(nextYear)
+  nextDate.setMonth(nextMonth)
+  nextDate.setDate(nextDay)
+
+  return nextDate
 }
 
 export function subtract(d, num, unit) {
