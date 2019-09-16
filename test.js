@@ -10,6 +10,15 @@ var date = new Date(
     , 30   /* sec */
     , 5);  /* ms */
 
+var dateLeapYearOnFeb = new Date(
+      2016 /* year */
+    , 1    /* month */
+    , 29   /* day */
+    , 8    /* hour */
+    , 25   /* min */
+    , 30   /* sec */
+    , 5);  /* ms */
+
 var dateLeapYear = new Date(
       2016 /* year */
     , 0    /* month */
@@ -63,19 +72,29 @@ console.log(' passed')
 console.log('---- Date Math ----------------------------')
 
 assert.equal(+dateMath.add(date, 1, 'century'), +(new Date(2114, 1, 18, 8, 25, 30, 5)), 'add century')
-assert.equal(+dateMath.add(date, 1, 'decade'),  +(new Date(2024, 1, 18, 8, 25, 30, 5)), 'add decade')
-assert.equal(+dateMath.add(date, 1, 'year'),    +(new Date(2015, 1, 18, 8, 25, 30, 5)), 'add year')
-assert.equal(+dateMath.add(date, 1, 'month'),   +(new Date(2014, 2, 18, 8, 25, 30, 5)), 'add month #1')
+assert.equal(+dateMath.add(date, 1, 'decade'), +(new Date(2024, 1, 18, 8, 25, 30, 5)), 'add decade')
+assert.equal(+dateMath.add(date, 1, 'year'), +(new Date(2015, 1, 18, 8, 25, 30, 5)), 'add year')
+assert.equal(+dateMath.add(dateLeapYear, 1, 'year'), +(new Date(2017, 0, 31, 8, 25, 30, 5)), 'add year to leap year')
+assert.equal(+dateMath.add(date, 1, 'month'), +(new Date(2014, 2, 18, 8, 25, 30, 5)), 'add month')
 assert.equal(+dateMath.add(dateLeapYear, 1, 'month'), +(new Date(2016, 1, 29, 8, 25, 30, 5)), 'add month on leap year')
-assert.equal(+dateMath.add(date, 1, 'day'),     +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add day')
-assert.equal(+dateMath.add(date, 1, 'week'),    +(new Date(2014, 1, 25, 8, 25, 30, 5)), 'add week')
-assert.equal(+dateMath.add(date, 1, 'hours'),   +(new Date(2014, 1, 18, 9, 25, 30, 5)), 'add hours')
-assert.equal(+dateMath.add(date, 24, 'hours'),   +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add hours')
-assert.equal(+dateMath.add(date, 1, 'minutes'), +(new Date(2014, 1, 18, 8, 26, 30, 5)), 'add minutes #1')
-assert.equal(+dateMath.add(date, 1440, 'minutes'), +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add minutes #2')
+assert.equal(+dateMath.add(date, 1, 'day'), +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add day')
+assert.equal(+dateMath.add(dateLeapYear, 29, 'day'), +(new Date(2016, 1, 29, 8, 25, 30, 5)), 'add 29 days on leap year')
+assert.equal(+dateMath.add(date, 1, 'week'), +(new Date(2014, 1, 25, 8, 25, 30, 5)), 'add week')
+assert.equal(+dateMath.add(date, 1, 'hours'), +(new Date(2014, 1, 18, 9, 25, 30, 5)), 'add hours')
+assert.equal(+dateMath.add(date, 24, 'hours'), +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add a day in hours')
+assert.equal(+dateMath.add(dateLeapYear, 696, 'hours'), +(new Date(2016, 1, 29, 8, 25, 30, 5)), 'add 29 days in hours on leap year')
+assert.equal(+dateMath.add(date, 1, 'minutes'), +(new Date(2014, 1, 18, 8, 26, 30, 5)), 'add minutes')
+assert.equal(+dateMath.add(dateLeapYear, 41760, 'minutes'), +(new Date(2016, 1, 29, 8, 25, 30, 5)), 'add 29 days in minutes on leap year')
+assert.equal(+dateMath.add(date, 1440, 'minutes'), +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add a day in minutes')
 assert.equal(+dateMath.add(date, 1, 'seconds'), +(new Date(2014, 1, 18, 8, 25, 31, 5)), 'add seconds')
+assert.equal(+dateMath.add(dateLeapYear, 2505600, 'seconds'), +(new Date(2016, 1, 29, 8, 25, 30, 5)), 'add 29 days in seconds on leap year')
+assert.equal(+dateMath.add(date, 86400, 'seconds'), +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add a day in seconds')
 assert.equal(+dateMath.add(date, 1, 'milliseconds'), +(new Date(2014, 1, 18, 8, 25, 30, 6)), 'add milliseconds')
+assert.equal(+dateMath.add(date, 86400000, 'milliseconds'), +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add a day in milliseconds')
+assert.equal(+dateMath.add(dateLeapYear, 2505600000, 'milliseconds'), +(new Date(2016, 1, 29, 8, 25, 30, 5)), 'add 29 days in milliseconds on leap year')
 assert.equal(+dateMath.subtract(date, 24, 'month'), +dateMath.subtract(date, 2, 'year'), 'month rollover')
+assert.equal(+dateMath.subtract(dateLeapYearOnFeb, 1, 'year'), +(new Date(2015, 1, 28, 8, 25, 30, 5)), 'subtract a leap year')
+assert.equal(+dateMath.subtract(dateLeapYearOnFeb, 60, 'day'), +(new Date(2015, 11, 31, 8, 25, 30, 5)), 'subtract 60 days of a leap year')
 
 assert.equal(+dateMath.max(date, new Date(2013, 0, 1, 0, 0, 0, 0)), +date, 'max')
 assert.equal(+dateMath.min(date, new Date(2015, 0, 1, 0, 0, 0, 0)), +date, 'min')
