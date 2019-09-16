@@ -78,12 +78,17 @@ function addMonths(d, num) {
     , month = d.getMonth()
     , day = d.getDate()
     , totalMonths = year * 12 + month + num
-    , nextYear = totalMonths / 12
+    , nextYear = Math.trunc(totalMonths / 12)
     , nextMonth = totalMonths % 12
-    , nextDay = Math.min(day, daysOf(year)[nextMonth])
+    , nextDay = Math.min(day, daysOf(nextYear)[nextMonth])
 
   var nextDate = new Date(d)
   nextDate.setFullYear(nextYear)
+
+  // To avoid a bug when sets the Feb month
+  // with a date > 28 or date > 29 (leap year)
+  nextDate.setDate(1)
+
   nextDate.setMonth(nextMonth)
   nextDate.setDate(nextDay)
 
