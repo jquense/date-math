@@ -10,6 +10,15 @@ var date = new Date(
     , 30   /* sec */
     , 5);  /* ms */
 
+var dateLeapYear = new Date(
+      2016 /* year */
+    , 0    /* month */
+    , 31   /* day */
+    , 8    /* hour */
+    , 25   /* min */
+    , 30   /* sec */
+    , 5);  /* ms */
+
 var beforeDaylightSavingTime = new Date(
       2017 /* year */
     , 2    /* month */
@@ -56,7 +65,8 @@ console.log('---- Date Math ----------------------------')
 assert.equal(+dateMath.add(date, 1, 'century'), +(new Date(2114, 1, 18, 8, 25, 30, 5)), 'add century')
 assert.equal(+dateMath.add(date, 1, 'decade'),  +(new Date(2024, 1, 18, 8, 25, 30, 5)), 'add decade')
 assert.equal(+dateMath.add(date, 1, 'year'),    +(new Date(2015, 1, 18, 8, 25, 30, 5)), 'add year')
-assert.equal(+dateMath.add(date, 1, 'month'),   +(new Date(2014, 2, 18, 8, 25, 30, 5)), 'add month')
+assert.equal(+dateMath.add(date, 1, 'month'),   +(new Date(2014, 2, 18, 8, 25, 30, 5)), 'add month #1')
+assert.equal(+dateMath.add(dateLeapYear, 1, 'month'), +(new Date(2016, 1, 29, 8, 25, 30, 5)), 'add month on leap year')
 assert.equal(+dateMath.add(date, 1, 'day'),     +(new Date(2014, 1, 19, 8, 25, 30, 5)), 'add day')
 assert.equal(+dateMath.add(date, 1, 'week'),    +(new Date(2014, 1, 25, 8, 25, 30, 5)), 'add week')
 assert.equal(+dateMath.add(date, 1, 'hours'),   +(new Date(2014, 1, 18, 9, 25, 30, 5)), 'add hours')
