@@ -60,17 +60,9 @@ export function add(d, num, unit) {
 }
 
 function addMillis(d, num) {
-  const currentOffset = d.getTimezoneOffset()
+  var nextDate = new Date(+(d) + num)
 
-  var t = +(d)
-  const nextDate = new Date(t + num)
-  const nextOffset = nextDate.getTimezoneOffset()
-
-  // if is DST, add the difference in minutes
-  // else the difference is zero
-  const diffMinutes = (nextOffset - currentOffset)
-
-  return new Date(+(nextDate) + diffMinutes * multiplierMilli['minutes'])
+  return solveDST(d, nextDate)
 }
 
 function addMonths(d, num) {
@@ -92,7 +84,18 @@ function addMonths(d, num) {
   nextDate.setMonth(nextMonth)
   nextDate.setDate(nextDay)
 
-  return nextDate
+  return solveDST(d, nextDate)
+}
+
+function solveDST(currentDate, nextDate) {
+  var currentOffset = currentDate.getTimezoneOffset()
+    , nextOffset = nextDate.getTimezoneOffset()
+
+  // if is DST, add the difference in minutes
+  // else the difference is zero
+  var diffMinutes = (nextOffset - currentOffset)
+
+  return new Date(+(nextDate) + diffMinutes * multiplierMilli['minutes'])
 }
 
 export function subtract(d, num, unit) {
