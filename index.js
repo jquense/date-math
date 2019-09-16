@@ -40,7 +40,7 @@ function daysInFeb(year) {
 
 export function add(d, num, unit) {
   d = new Date(d)
-  var t = +(d)
+
   switch (unit){
     case MILI:
     case SECONDS:
@@ -48,18 +48,32 @@ export function add(d, num, unit) {
     case HOURS:
     case DAY:
     case WEEK:
-      return new Date(t + num * multiplierMilli[unit])
+      return addMillis(d, num * multiplierMilli[unit])
     case MONTH:
     case YEAR:
     case DECADE:
     case CENTURY:
-      return addMonth(d, num * multiplierMonth[unit])
+      return addMonths(d, num * multiplierMonth[unit])
   }
 
   throw new TypeError('Invalid units: "' + unit + '"')
 }
 
-function addMonth(d, num) {
+function addMillis(d, num) {
+  const currentOffset = d.getTimezoneOffset()
+
+  var t = +(d)
+  const nextDate = new Date(t + num)
+  const nextOffset = nextDate.getTimezoneOffset()
+
+  // if is DST, add the difference in minutes
+  // else the difference is zero
+  const diffMinutes = (nextOffset - currentOffset)
+
+  return new Date(+(nextDate) + diffMinutes * multiplierMilli['minutes'])
+}
+
+function addMonths(d, num) {
   var year = d.getFullYear()
     , month = d.getMonth()
     , day = d.getDate()
@@ -220,21 +234,6 @@ export function diff(date1, date2, unit, asFloat) {
   result = dividend / divisor;
 
   return asFloat ? result : Math.round(result);
-}
-
-function monthMath(d, val){
-  var current = month(d)
-    , newMonth  = (current + val);
-
-    d = month(d, newMonth)
-
-    while (newMonth < 0 ) newMonth = 12 + newMonth
-
-    //month rollover
-    if ( month(d) !== ( newMonth % 12))
-      d = date(d, 0) //move to last of month
-
-    return d
 }
 
 function createAccessor(method){
