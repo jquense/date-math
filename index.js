@@ -84,7 +84,7 @@ function addMonths(d, num) {
   nextDate.setMonth(nextMonth)
   nextDate.setDate(nextDay)
 
-  return solveDST(d, nextDate)
+  return nextDate
 }
 
 function solveDST(currentDate, nextDate) {
@@ -138,8 +138,25 @@ export function startOf(d, unit, firstOfWeek) {
 export function endOf(d, unit, firstOfWeek){
   d = new Date(d)
   d = startOf(d, unit, firstOfWeek)
-  d = add(d, 1, unit)
-  d = subtract(d, 1, MILI)
+  switch (unit) {
+    case CENTURY:
+    case DECADE:
+    case YEAR:
+    case MONTH:
+    case WEEK:
+      d = add(d, 1, unit)
+      d = subtract(d, 1, DAY)
+      d.setHours(23, 59, 59, 999)
+      break;
+    case DAY:
+      d.setHours(23, 59, 59, 999)
+      break;
+    case HOURS:
+    case MINUTES:
+    case SECONDS:
+      d = add(d, 1, unit)
+      d = subtract(d, 1, MILI)
+  }
   return d
 }
 
