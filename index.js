@@ -9,33 +9,93 @@ var MILI    = 'milliseconds'
   , DECADE  = 'decade'
   , CENTURY = 'century';
 
+var multiplierMilli = {
+  'milliseconds': 1,
+  'seconds': 1000,
+  'minutes': 60 * 1000,
+  'hours': 60 * 60 * 1000,
+  'day': 24 * 60 * 60 * 1000,
+  'week': 7 * 24 * 60 * 60 * 1000 
+}
+
+var multiplierMonth = {
+  'month': 1,
+  'year': 12,
+  'decade': 10 * 12,
+  'century': 100 * 12
+}
+
+function daysOf(year) {
+  return [31, daysInFeb(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+}
+
+function daysInFeb(year) {
+  return (
+      year % 4 === 0 
+      && year % 100 !== 0
+    ) || year % 400 === 0
+      ? 29
+      : 28
+}
+
 export function add(d, num, unit) {
   d = new Date(d)
 
   switch (unit){
     case MILI:
-      return milliseconds(d, milliseconds(d) + num)
     case SECONDS:
-      return seconds(d, seconds(d) + num)
     case MINUTES:
-      return minutes(d, minutes(d) + num)
     case HOURS:
-      return hours(d, hours(d) + num)
-    case YEAR:
-      return year(d, year(d) + num)
     case DAY:
-      return date(d, date(d) + num)
     case WEEK:
-      return date(d, date(d) + (7 * num))
+      return addMillis(d, num * multiplierMilli[unit])
     case MONTH:
-      return monthMath(d, num)
+    case YEAR:
     case DECADE:
-      return year(d, year(d) + (num * 10))
     case CENTURY:
-      return year(d, year(d) + (num * 100))
+      return addMonths(d, num * multiplierMonth[unit])
   }
 
   throw new TypeError('Invalid units: "' + unit + '"')
+}
+
+function addMillis(d, num) {
+  var nextDate = new Date(+(d) + num)
+
+  return solveDST(d, nextDate)
+}
+
+function addMonths(d, num) {
+  var year = d.getFullYear()
+    , month = d.getMonth()
+    , day = d.getDate()
+    , totalMonths = year * 12 + month + num
+    , nextYear = Math.trunc(totalMonths / 12)
+    , nextMonth = totalMonths % 12
+    , nextDay = Math.min(day, daysOf(nextYear)[nextMonth])
+
+  var nextDate = new Date(d)
+  nextDate.setFullYear(nextYear)
+
+  // To avoid a bug when sets the Feb month
+  // with a date > 28 or date > 29 (leap year)
+  nextDate.setDate(1)
+
+  nextDate.setMonth(nextMonth)
+  nextDate.setDate(nextDay)
+
+  return nextDate
+}
+
+function solveDST(currentDate, nextDate) {
+  var currentOffset = currentDate.getTimezoneOffset()
+    , nextOffset = nextDate.getTimezoneOffset()
+
+  // if is DST, add the difference in minutes
+  // else the difference is zero
+  var diffMinutes = (nextOffset - currentOffset)
+
+  return new Date(+(nextDate) + diffMinutes * multiplierMilli['minutes'])
 }
 
 export function subtract(d, num, unit) {
@@ -78,8 +138,25 @@ export function startOf(d, unit, firstOfWeek) {
 export function endOf(d, unit, firstOfWeek){
   d = new Date(d)
   d = startOf(d, unit, firstOfWeek)
-  d = add(d, 1, unit)
-  d = subtract(d, 1, MILI)
+  switch (unit) {
+    case CENTURY:
+    case DECADE:
+    case YEAR:
+    case MONTH:
+    case WEEK:
+      d = add(d, 1, unit)
+      d = subtract(d, 1, DAY)
+      d.setHours(23, 59, 59, 999)
+      break;
+    case DAY:
+      d.setHours(23, 59, 59, 999)
+      break;
+    case HOURS:
+    case MINUTES:
+    case SECONDS:
+      d = add(d, 1, unit)
+      d = subtract(d, 1, MILI)
+  }
   return d
 }
 
@@ -182,21 +259,6 @@ export function diff(date1, date2, unit, asFloat) {
   result = dividend / divisor;
 
   return asFloat ? result : Math.round(result);
-}
-
-function monthMath(d, val){
-  var current = month(d)
-    , newMonth  = (current + val);
-
-    d = month(d, newMonth)
-
-    while (newMonth < 0 ) newMonth = 12 + newMonth
-
-    //month rollover
-    if ( month(d) !== ( newMonth % 12))
-      d = date(d, 0) //move to last of month
-
-    return d
 }
 
 function createAccessor(method){
