@@ -1,6 +1,6 @@
 {
   "name": "date-arithmetic",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "simple date math util",
   "main": "index.cjs.js",
   "module": "index.js",
@@ -10,14 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jquense/date-math"
+    "url": "git+https://github.com/jquense/date-math.git"
   },
   "keywords": [
     "moment",
     "date",
     "math"
   ],
-  "author": "Jason Quense @monasticpanic",
+  "author": {
+    "name": "Jason Quense @monasticpanic"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jquense/date-math/issues"
@@ -26,5 +28,7 @@
   "devDependencies": {
     "esm": "^3.2.25",
     "rollup": "^1.14.4"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "date-arithmetic@4.0.1"
 }
